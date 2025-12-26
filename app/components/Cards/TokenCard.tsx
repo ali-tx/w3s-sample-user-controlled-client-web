@@ -40,7 +40,7 @@ export const TokenCard: React.FC<TokenCardProps> = ({
 
   return (
     <Card
-      className={`rounded-lg bg-white ${onClick ? "cursor-pointer hover:bg-slate-50 transition-all" : ""}`}
+      className={`rounded-lg bg-white ${onClick ? "cursor-pointer hover:bg-slate-50 transition-all " : ""}`}
       onClick={onClick}
     >
       <CardContent className='flex flex-row gap-6'>

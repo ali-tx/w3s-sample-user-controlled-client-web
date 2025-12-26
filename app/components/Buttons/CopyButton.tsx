@@ -70,7 +70,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({
       {copied ? "Copied" : <span className="truncate">{copyLabel}</span>}
     </Button>
   ) : (
-    <IconButton onClick={handleCopyToClipboard}>
+    <IconButton onClick={handleCopyToClipboard} >
       {copied ? <CheckIcon width={20} /> : <DocumentDuplicateIcon width={20} />}
     </IconButton>
   );

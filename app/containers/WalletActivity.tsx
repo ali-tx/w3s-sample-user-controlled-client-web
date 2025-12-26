@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
+'use client';
 import {
   useTokenDetailsQuery,
   useTransactionsQuery,
   useWallet,
-} from "@/app/axios";
-import { LoadingWrapper } from "@/app/components";
-import Image from "next/image";
+} from '@/app/axios';
+import { LoadingWrapper } from '@/app/components';
+import Image from 'next/image';
 import {
   Chip,
   List,
@@ -29,12 +29,12 @@ import {
   ListItemButton,
   Typography,
   Divider,
-} from "@mui/joy";
-import { Transaction } from "../shared/types";
-import { useRouter } from "next/navigation";
-import { MegaphoneIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { useMemo } from "react";
-import { getTransactionOperation, formatDate } from "../shared/utils";
+} from '@mui/joy';
+import { Transaction } from '../shared/types';
+import { useRouter } from 'next/navigation';
+import { MegaphoneIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { useMemo } from 'react';
+import { getTransactionOperation, formatDate } from '../shared/utils';
 
 interface WalletActivityProps {
   id: string;
@@ -46,17 +46,17 @@ export const WalletActivity: React.FC<WalletActivityProps> = ({ id }) => {
 
   if (!isLoading && transactions?.length === 0) {
     return (
-      <div className='flex flex-col items-center'>
+      <div className="flex flex-col items-center">
         <Image
-          alt='no tokens'
+          alt="no tokens"
           src={`/NoActivity.svg`}
           height={80}
           width={80}
-          className='mx-auto mt-6 mb-6'
+          className="mx-auto mt-6 mb-6"
         />
         <Typography
-          level='title-lg'
-          className='text-center font-semibold text-gray-400'
+          level="title-lg"
+          className="text-center font-semibold text-gray-400"
         >
           No activity yet
         </Typography>
@@ -67,16 +67,16 @@ export const WalletActivity: React.FC<WalletActivityProps> = ({ id }) => {
   return (
     <LoadingWrapper isLoading={isLoading}>
       {transactions?.length && (
-        <List className='py-0 px-0'>
+        <List className="py-0 px-0">
           {transactions?.map((transaction: Transaction, index: number) => (
             <div key={transaction.id}>
               <TransactionRow
                 transaction={transaction}
                 walletId={id}
-                walletAddress={wallet?.data.wallet.address ?? ""}
+                walletAddress={wallet?.data.wallet.address ?? ''}
               />
               {index !== transactions.length - 1 && (
-                <Divider orientation='horizontal' className='w-full' />
+                <Divider orientation="horizontal" className="w-full" />
               )}
             </div>
           ))}
@@ -84,9 +84,9 @@ export const WalletActivity: React.FC<WalletActivityProps> = ({ id }) => {
       )}
       {!transactions?.length && (
         <div>
-          <p className='text-center'>
+          <p className="text-center">
             No transactions for this wallet
-            <MegaphoneIcon className='m-2' />
+            <MegaphoneIcon className="m-2" />
           </p>
         </div>
       )}
@@ -110,7 +110,7 @@ const TransactionRow = ({
     transaction,
   );
 
-  const tokenId = transaction?.tokenId ?? "";
+  const tokenId = transaction?.tokenId ?? '';
   const { data: tokenDetails } = useTokenDetailsQuery(
     tokenId,
     transaction.tokenId !== undefined,
@@ -124,24 +124,24 @@ const TransactionRow = ({
   return (
     <ListItem>
       <ListItemButton
-        className='flex justify-between w-full py-2'
+        className="flex justify-between w-full py-2"
         onClick={() =>
           router.push(`/wallets/${walletId}/activity/${transaction.id}`)
         }
       >
-        <div className='flex items-center gap-4'>
-          <span className='w-16'>
-            <Chip color='primary' variant='solid' size='sm'>
+        <div className="flex items-center gap-4">
+          <span className="w-16">
+            <Chip color="primary" variant="solid" size="sm">
               {operation}
             </Chip>
           </span>
           <span>
-            <Typography level='body-md'>
+            <Typography level="body-md">
               {operator}
-              {transaction.amounts && transaction.amounts[0]}{" "}
+              {transaction.amounts && transaction.amounts[0]}{' '}
               {tokenDetails?.symbol}
             </Typography>
-            <Typography level='body-sm'>{formatDate(date)}</Typography>
+            <Typography level="body-sm">{formatDate(date)}</Typography>
           </span>
         </div>
         <ChevronRightIcon width={24} />

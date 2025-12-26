@@ -14,15 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { NextAuthOptions, Session, User } from "next-auth";
-import { axios } from "@/app/axios";
+import { NextAuthOptions, Session, User } from 'next-auth';
+import { axios } from '@/app/axios';
 import {
   GasFeeObject,
   Transaction,
   TransactionStateEnum,
   TransactionTypeEnum,
-} from "./types";
-import CredentialsProvider from "next-auth/providers/credentials";
+} from './types';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const calculateSum = (amounts: string[]): string => {
   const finalSum = amounts.reduce((sum, amount) => Number(amount) + sum, 0);
@@ -40,33 +40,33 @@ export const formatDate = (date: Date): string => {
 export const findChipColor = (state: TransactionStateEnum) => {
   switch (state) {
     case TransactionStateEnum.INITIATED:
-      return "primary";
+      return 'primary';
     case TransactionStateEnum.PENDING_RISK_SCREENING:
-      return "primary";
+      return 'primary';
     case TransactionStateEnum.DENIED:
-      return "neutral";
+      return 'neutral';
     case TransactionStateEnum.QUEUED:
-      return "primary";
+      return 'primary';
     case TransactionStateEnum.SENT:
-      return "primary";
+      return 'primary';
     case TransactionStateEnum.CONFIRMED:
-      return "primary";
+      return 'primary';
     case TransactionStateEnum.COMPLETE:
-      return "success";
+      return 'success';
     case TransactionStateEnum.FAILED:
-      return "danger";
+      return 'danger';
     case TransactionStateEnum.CANCELLED:
-      return "neutral";
+      return 'neutral';
   }
 };
 
 export const getAddressAbbreviation = (address: string) => {
-  return address.slice(0, 6) + "..." + address.slice(-6);
+  return address.slice(0, 6) + '...' + address.slice(-6);
 };
 
 export const calculateEstimatedFee = (estimatedFee: GasFeeObject): number => {
   return (
-    (parseFloat(estimatedFee.maxFee ? estimatedFee.maxFee : "0") +
+    (parseFloat(estimatedFee.maxFee ? estimatedFee.maxFee : '0') +
       parseFloat(estimatedFee.priorityFee)) *
     parseFloat(estimatedFee.gasLimit) *
     10 ** -9
@@ -76,77 +76,77 @@ export const calculateEstimatedFee = (estimatedFee: GasFeeObject): number => {
 // only testnet blockchains.
 export const blockchainMeta = (blockchain: string | undefined) => {
   switch (blockchain) {
-    case "MATIC-AMOY":
+    case 'MATIC-AMOY':
       return {
         svg: `/Matic.svg`,
-        testnet: "Matic Amoy Testnet",
-        nativeTokenName: "AmoyMATIC",
+        testnet: 'Matic Amoy Testnet',
+        nativeTokenName: 'AmoyMATIC',
       };
-    case "ETH-SEPOLIA":
+    case 'ETH-SEPOLIA':
       return {
         svg: `/Eth.svg`,
-        testnet: "Ethereum Sepolia Testnet",
-        nativeTokenName: "SepoliaETH",
+        testnet: 'Ethereum Sepolia Testnet',
+        nativeTokenName: 'SepoliaETH',
       };
-    case "AVAX-FUJI":
+    case 'AVAX-FUJI':
       return {
         svg: `/Avax.svg`,
-        testnet: "Avalanche Fuji Testnet",
-        nativeTokenName: "FujiAVAX",
+        testnet: 'Avalanche Fuji Testnet',
+        nativeTokenName: 'FujiAVAX',
       };
 
-    case "SOL-DEVNET":
+    case 'SOL-DEVNET':
       return {
         svg: `/Solana.svg`,
-        testnet: "Solana Devnet",
-        nativeTokenName: "DevnetSOL",
+        testnet: 'Solana Devnet',
+        nativeTokenName: 'DevnetSOL',
       };
     default:
       return {
-        svg: "",
-        testnet: "",
-        nativeTokenName: "",
+        svg: '',
+        testnet: '',
+        nativeTokenName: '',
       };
   }
 };
 
 export const tokenHelper = (tokenName: string | undefined) => {
   switch (tokenName) {
-    case "Ethereum-Sepolia":
+    case 'Ethereum-Sepolia':
       return {
         svg: `/Eth.svg`,
-        symbol: "ETH-SEPOLIA",
-        name: "SepoliaETH",
+        symbol: 'ETH-SEPOLIA',
+        name: 'SepoliaETH',
       };
-    case "Polygon-Amoy":
+    case 'Polygon-Amoy':
       return {
         svg: `/Matic.svg`,
-        symbol: "MATIC-AMOY",
-        name: "AmoyMATIC",
+        symbol: 'MATIC-AMOY',
+        name: 'AmoyMATIC',
       };
-    case "Avalanche-Fuji":
+    case 'Avalanche-Fuji':
       return {
         svg: `/Avax.svg`,
-        symbol: "AVAX-FUJI",
-        name: "FujiAVAX",
+        symbol: 'AVAX-FUJI',
+        name: 'FujiAVAX',
       };
-    case "Solana-Devnet":
+    case 'Solana-Devnet':
       return {
         svg: `/Solana.svg`,
-        symbol: "SOL-DEVNET",
-        name: "DevnetSOL",
+        symbol: 'SOL-DEVNET',
+        name: 'DevnetSOL',
       };
-    case "USD Coin":
-    case "USDC":
+    case 'USD Coin':
+    case 'USDC':
       return {
         svg: `/USDC.svg`,
-        symbol: "USDC",
-        name: "USDC",
+        symbol: 'USDC',
+        name: 'USDC',
       };
     default:
       return {
-        svg: "",
-        symbol: "",
+        svg: '',
+        symbol: '',
       };
   }
 };
@@ -158,8 +158,8 @@ export const getTransactionOperation = (
   const isSend =
     transaction?.sourceAddress === walletAddress &&
     transaction?.transactionType === TransactionTypeEnum.OUTBOUND;
-  const operation = isSend ? "Sent" : "Deposited";
-  const operator = isSend ? "-" : "+";
+  const operation = isSend ? 'Sent' : 'Deposited';
+  const operator = isSend ? '-' : '+';
 
   return { operation, operator };
 };
@@ -176,8 +176,8 @@ export const validOnboardStatus = async (
     }>(`/users/${session.user.userId}`);
 
     if (
-      response?.data?.user.pinStatus == "ENABLED" &&
-      response?.data?.user.securityQuestionStatus == "ENABLED"
+      response?.data?.user.pinStatus == 'ENABLED' &&
+      response?.data?.user.securityQuestionStatus == 'ENABLED'
     ) {
       return true;
     }
@@ -191,14 +191,14 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      id: "SignIn",
+      id: 'SignIn',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, _req): Promise<any> {
         if (!credentials) return null;
-        const userInfo = await axios.post("/signin", {
+        const userInfo = await axios.post('/signin', {
           password: credentials?.password,
           email: credentials?.email,
         });
@@ -217,21 +217,21 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     CredentialsProvider({
-      id: "SignUp",
+      id: 'SignUp',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, _req): Promise<any> {
         if (!credentials) return null;
-        const userInfo = await axios.post("/signup", {
+        const userInfo = await axios.post('/signup', {
           password: credentials?.password,
           email: credentials?.email,
         });
         if (userInfo) {
           if (userInfo.status === 201) {
             throw Error(
-              "This email address has already been used, please sign in",
+              'This email address has already been used, please sign in',
             );
           }
           // Any object returned will be saved in `user` property of the JWT
@@ -259,7 +259,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/signin",
+    signIn: '/signin',
   },
-  debug: process.env.NODE_ENV !== "production",
+  debug: process.env.NODE_ENV !== 'production',
 };

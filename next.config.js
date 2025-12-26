@@ -3,17 +3,17 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/",
-        destination: "/signin",
+        source: '/',
+        destination: '/signin',
         permanent: true,
       },
     ];
   },
-  output: "standalone",
+  output: 'standalone',
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      use: ["@svgr/webpack"],
+      use: ['@svgr/webpack'],
     });
     return config;
   },

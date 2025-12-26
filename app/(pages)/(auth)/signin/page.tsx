@@ -14,10 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { authOptions, validOnboardStatus } from "@/app/shared/utils";
-import { AuthenticationForm } from "@/app/components";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { authOptions, validOnboardStatus } from '@/app/shared/utils';
+import { AuthenticationForm } from '@/app/components';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export default async function SigninPage() {
   const session = await getServerSession(authOptions);
@@ -26,7 +26,7 @@ export default async function SigninPage() {
     : false;
 
   if (session && isValidOnboardStatus) {
-    redirect("/wallets");
+    redirect('/wallets');
   }
 
   return <AuthenticationForm />;

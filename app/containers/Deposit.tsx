@@ -33,8 +33,10 @@ export const Deposit: React.FC<DepositProps> = ({ walletId }) => {
 
   const { data: wallet } = useWallet(walletId);
   const walletAddress = wallet?.data.wallet.address ?? "";
+    const qrCodeValue = `polygon:${walletAddress}@80002?amount=1&currency=USD&asset=USDC`;
 
-  return (
+
+    return (
     <Content>
       <nav>
         <BackButton onClick={router.back}>Deposit</BackButton>
@@ -43,7 +45,7 @@ export const Deposit: React.FC<DepositProps> = ({ walletId }) => {
         <Typography>
           Use the QR code or wallet address to deposit directly to this wallet.
         </Typography>
-        <QRCode value={walletAddress} />
+        <QRCode value={qrCodeValue} />
         <CopyButton
           variant="solid"
           copyValue={walletAddress}
