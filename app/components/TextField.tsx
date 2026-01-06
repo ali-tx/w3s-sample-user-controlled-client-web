@@ -33,7 +33,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   ({ label, helperText, ...props }, ref) => {
     return (
       <FormControl id={props.id} error={props.error} className='w-full'>
-        <FormLabel className='text-sm'>{label}</FormLabel>
+        <FormLabel className='text-sm tw-mb-2'>{label}</FormLabel>
         <Input className='text-lg' ref={ref} size='lg' {...props} />
         <FormHelperText>
           {props.error && (

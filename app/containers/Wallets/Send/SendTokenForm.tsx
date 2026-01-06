@@ -178,6 +178,7 @@ export const SendTokenForm = () => {
               />
             </div>
             <Button
+             className="bg-gradient-to-r from-blue-600 to-indigo-600 "
               loading={formState.isSubmitting}
               disabled={token?.amount === "0"}
               type="submit"

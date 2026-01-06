@@ -14,15 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
-import { axios } from "@/app/axios";
-import { useQuery } from "react-query";
-import { useMutation } from "react-query";
+'use client';
+import { axios } from '@/app/axios';
+import { useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import {
   EstimateFeeInput,
   EstimateFeeResponse,
   Transaction,
-} from "../shared/types";
+} from '../shared/types';
 
 // Get transactions query
 const transactionsHelper = async (walletId: string) => {
@@ -35,7 +35,7 @@ const transactionsHelper = async (walletId: string) => {
 
 export const useTransactionsQuery = (walletId: string) => {
   return useQuery({
-    queryKey: ["listTransactions", walletId],
+    queryKey: ['listTransactions', walletId],
     queryFn: () => transactionsHelper(walletId),
   });
 };
@@ -51,7 +51,7 @@ const transactionHelper = async (transactionId: string) => {
 
 export const useTransactionQuery = (transactionId: string) => {
   return useQuery({
-    queryKey: ["getTransaction", transactionId],
+    queryKey: ['getTransaction', transactionId],
     queryFn: () => transactionHelper(transactionId),
   });
 };
@@ -59,8 +59,8 @@ export const useTransactionQuery = (transactionId: string) => {
 // Estimate Transfer Fee
 const estimateFeeHelper = async (input: EstimateFeeInput) => {
   const response = await axios.post<EstimateFeeResponse>(
-    "/transactions/transfer/estimateFee",
-    input
+    '/transactions/transfer/estimateFee',
+    input,
   );
 
   return response.data;
@@ -77,11 +77,11 @@ const validateAddressMutationHelper = async ({
   blockchain: string;
 }) => {
   const { data } = await axios.post<{}, { data: { isValid: boolean } }>(
-    "/transactions/validateAddress",
+    '/transactions/validateAddress',
     {
       address,
       blockchain,
-    }
+    },
   );
 
   return data;
@@ -96,11 +96,11 @@ const createTransferHelper = async (bodyParams: {
   tokenId: string;
   walletId: string;
   amounts: string[];
-  feeLevel: "LOW" | "MEDIUM" | "HIGH";
+  feeLevel: 'LOW' | 'MEDIUM' | 'HIGH';
 }) => {
   const response = await axios.post<{ challengeId: string }>(
-    "/transactions/transfer",
-    bodyParams
+    '/transactions/transfer',
+    bodyParams,
   );
 
   return response.data;
@@ -108,3 +108,26 @@ const createTransferHelper = async (bodyParams: {
 
 export const useCreateTransferMutation = () =>
   useMutation(createTransferHelper);
+
+
+
+// Add to your transactions.ts
+// export const useTransfersQuery = () => {
+//   return useQuery({
+//     queryKey: ['listTransfers'],
+//     queryFn: async () => {
+//       const response = await axios.get<{ transfers: Transfer[] }>('/transfers');
+//       return response.data.transfers;
+//     },
+//   });
+// };
+
+// export const useTransferStatsQuery = () => {
+//   return useQuery({
+//     queryKey: ['transferStats'],
+//     queryFn: async () => {
+//       const response = await axios.get('/transfers/stats');
+//       return response.data;
+//     },
+//   });
+// };

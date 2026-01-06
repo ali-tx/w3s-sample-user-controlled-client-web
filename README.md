@@ -25,7 +25,7 @@ This is a sample frontend UI that plays a part in the larger Sample App project.
 
 Run the following commands to start the UI at `localhost:3000`:
 
-``` bash
+```bash
 nvm use
 yarn install
 yarn dev
@@ -37,7 +37,7 @@ yarn dev
 
 ## Architecture
 
-The frontend UI will play the role as `Your Application`, see [details](<https://developers.circle.com/w3s/docs/sdk-architecture-for-user-controlled-wallets#sdk-architecture>).
+The frontend UI will play the role as `Your Application`, see [details](https://developers.circle.com/w3s/docs/sdk-architecture-for-user-controlled-wallets#sdk-architecture).
 ![image](https://files.readme.io/a2a1678-SDK_UserC_Wallets_Sequence__Detailed2x.png)
 
 ## Code Structure
@@ -45,46 +45,47 @@ The frontend UI will play the role as `Your Application`, see [details](<https:/
 We use [Next.js](https://nextjs.org/) as [React](https://react.dev/) framework and [Joy UI](https://mui.com/joy-ui/getting-started/) as React component library.
 
 - The main logic to interact with the Circle Web3 Services Web SDK is going to be in our client side component in `app/components`:
+
   - `providers/W3sProvider.tsx`: holds the value to setup and instantiate a SDK instance. Part of the setup is authorizing with the App ID,
-  
-      ```javascript
-        webClient?.setAppSettings({
-          appId,
-        });
-      ```
-
-      setting up the forgot pin callback,
-
-      ```javascript
-        webClient?.setOnForgotPin(async () => {
-          const response = await axios.post<{ challengeId: string }>(
-            "/users/pin/restore",
-          );
-          if (response.data) {
-            webClient.execute(response.data.challengeId);
-          }
-        });
-      ```
-
-      and authenticating with the user token + encryption key.
-
-      ```javascript
-        client.setAuthentication({
-            userToken: currUser.userToken,
-            encryptionKey: currUser.encryptionKey,
-          });
-      ```
-
-  - `Authentication/AuthenticationForm.tsx` has an example of executing a challenge ID and cutomizing behavior based off a successful execution.
 
     ```javascript
-      client.execute(session.user.challengeId, (error, result) => {
-        if (error) {
-          setFormMessage("An error occurred on PIN Setup. Please try again.");
-        } else if (result) {
-          router.push("/wallets");
+    webClient?.setAppSettings({
+      appId,
+    });
+    ```
+
+    setting up the forgot pin callback,
+
+    ```javascript
+      webClient?.setOnForgotPin(async () => {
+        const response = await axios.post<{ challengeId: string }>(
+          "/users/pin/restore",
+        );
+        if (response.data) {
+          webClient.execute(response.data.challengeId);
         }
       });
+    ```
+
+    and authenticating with the user token + encryption key.
+
+    ```javascript
+    client.setAuthentication({
+      userToken: currUser.userToken,
+      encryptionKey: currUser.encryptionKey,
+    });
+    ```
+
+  - `AuthenticationenticationForm.tsx` has an example of executing a challenge ID and cutomizing behavior based off a successful execution.
+
+    ```javascript
+    client.execute(session.user.challengeId, (error, result) => {
+      if (error) {
+        setFormMessage('An error occurred on PIN Setup. Please try again.');
+      } else if (result) {
+        router.push('/wallets');
+      }
+    });
     ```
 
 - `app/(pages)` contains all the server side pages of this Next.js application. Any directory wrapped in `()` is a [route grouping](https://nextjs.org/docs/app/building-your-application/routing/route-groups).
@@ -94,8 +95,7 @@ We use [Next.js](https://nextjs.org/) as [React](https://react.dev/) framework a
 **Happy Coding!**
 
 ## Additional Resources
-  
+
 - [Circle Web3 Services Web SDK](https://developers.circle.com/w3s/docs/web-sdk-ui-customizations) supports UI customization, check [more examples](https://github.com/circlefin/w3s-pw-web-sdk).
 - Need help: <customer-support@circle.com>
 - Join our Discord community: <https://discord.com/invite/buildoncircle>
-# w3s-sample-user-controlled-client-web
