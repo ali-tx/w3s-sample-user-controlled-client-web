@@ -191,32 +191,6 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      id: "SignIn",
-      credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials, _req): Promise<any> {
-        if (!credentials) return null;
-        const userInfo = await axios.post("/signin", {
-          password: credentials?.password,
-          email: credentials?.email,
-        });
-        if (userInfo) {
-          // Any object returned will be saved in `user` property of the JWT
-          const user = {
-            userId: userInfo.data.userId,
-            userToken: userInfo.data.userToken,
-            encryptionKey: userInfo.data.encryptionKey,
-            challengeId: userInfo.data?.challengeId,
-          };
-          return user;
-        } else {
-          return null;
-        }
-      },
-    }),
-    CredentialsProvider({
       id: "SignUp",
       credentials: {
         email: { label: "Email", type: "text" },
@@ -247,6 +221,33 @@ export const authOptions: NextAuthOptions = {
         }
       },
     }),
+    CredentialsProvider({
+      id: "SignIn",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, _req): Promise<any> {
+        if (!credentials) return null;
+        const userInfo = await axios.post("/signin", {
+          password: credentials?.password,
+          email: credentials?.email,
+        });
+        if (userInfo) {
+          // Any object returned will be saved in `user` property of the JWT
+          const user = {
+            userId: userInfo.data.userId,
+            userToken: userInfo.data.userToken,
+            encryptionKey: userInfo.data.encryptionKey,
+            challengeId: userInfo.data?.challengeId,
+          };
+          return user;
+        } else {
+          return null;
+        }
+      },
+    }),
+
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
