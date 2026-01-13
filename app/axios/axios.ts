@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import ax, { AxiosError } from "axios";
-import { getSession, signOut } from "next-auth/react";
+import ax, { AxiosError } from 'axios';
+import { getSession, signOut } from 'next-auth/react';
 
 const axios = ax.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   headers: {
     post: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   },
 });
@@ -48,7 +48,7 @@ axios.interceptors.request.use(async (request) => {
 axios.interceptors.response.use(undefined, async (error: unknown) => {
   if (error instanceof AxiosError && error.response?.status === 403) {
     await signOut({
-      callbackUrl: "/signin",
+      callbackUrl: '/signin',
       redirect: true,
     });
   }
