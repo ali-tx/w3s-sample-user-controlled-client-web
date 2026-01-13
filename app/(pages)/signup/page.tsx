@@ -27,7 +27,7 @@ export default async function SignupPage() {
     : false;
 
   if (session && isValidOnboardStatus) {
-    redirect("/wallets");
+    redirect("/signin");
   }
 
   return <AuthenticationForm isSignIn={false} />;

@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Button from "@mui/joy/Button";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { TextField } from "@/app/components/TextField";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 import { IconButton, Typography } from "@mui/joy";
@@ -65,22 +65,25 @@ export const AuthenticationForm: React.FC<AuthenticationFormProps> = ({
 
   useEffect(() => {
     if (redirect && client && session) {
-      if (session.user.challengeId) {
-        client.execute(session.user.challengeId, (error, result) => {
+      if (!isSignIn && session.user.challengeId) {
+        client.execute(session.user.challengeId, async (error, result) => {
           if (error) {
             setFormMessage("An error occurred on PIN Setup. Please try again.");
           } else if (result) {
-            // result will be undefined if popup is closed
-            // only navigate to wallets if PIN setup complete
-            router.push("/wallets");
+            // destroy session and redirect to signin
+            await signOut({ redirect: false });
+            router.push("/signin");
           }
         });
+      } else if (!isSignIn) {
+        // destroy session and redirect to signin
+        signOut({ redirect: false }).then(() => router.push("/signin"));
       } else {
         router.push("/wallets");
       }
       setLoading(false);
     }
-  }, [redirect, session, session?.user, client, router]);
+  }, [redirect, session, session?.user, client, router, isSignIn]);
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
