@@ -98,3 +98,4 @@ We use [Next.js](https://nextjs.org/) as [React](https://react.dev/) framework a
 - [Circle Web3 Services Web SDK](https://developers.circle.com/w3s/docs/web-sdk-ui-customizations) supports UI customization, check [more examples](https://github.com/circlefin/w3s-pw-web-sdk).
 - Need help: <customer-support@circle.com>
 - Join our Discord community: <https://discord.com/invite/buildoncircle>
+# w3s-sample-user-controlled-client-web
