@@ -70,6 +70,7 @@ export type WalletsInput = {
 export type Wallet = {
   id: string;
   address: string;
+  contractAddress?: string;
   blockchain: BlockchainEnum | string;
   createDate: Date;
   custodyType: string;

@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import Button from '@mui/joy/Button';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { TextField } from '@/app/components/TextField';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/16/solid';
 import { IconButton, Typography } from '@mui/joy';
@@ -60,28 +60,50 @@ export const AuthenticationForm: React.FC<AuthenticationFormProps> = ({
   const [isMasked, setIsMasked] = useState(true);
   const [formMessage, setFormMessage] = useState<string | undefined>(undefined);
   const [redirect, setRedirect] = useState<boolean>(false);
+  const [isSignupFlow, setIsSignupFlow] = useState<boolean>(false);
   const router = useRouter();
   const { client } = useW3sContext();
   const { data: session } = useSession();
 
   useEffect(() => {
     if (redirect && client && session) {
-      if (session.user.challengeId) {
-        client.execute(session.user.challengeId, (error, result) => {
-          if (error) {
-            setFormMessage('An error occurred on PIN Setup. Please try again.');
-          } else if (result) {
-            // result will be undefined if popup is closed
-            // only navigate to wallets if PIN setup complete
-            router.push('/wallets');
-          }
-        });
+      if (isSignupFlow) {
+        // Signup flow: complete setup, then destroy session and redirect to signin
+        if (session.user.challengeId) {
+          client.execute(session.user.challengeId, (error, result) => {
+            if (error) {
+              setFormMessage('An error occurred on PIN Setup. Please try again.');
+            } else if (result) {
+              // Setup complete, sign out and redirect to signin
+              signOut({ redirect: false }).then(() => {
+                router.push('/signin');
+              });
+            }
+          });
+        } else {
+          // No PIN setup needed, sign out and redirect to signin
+          signOut({ redirect: false }).then(() => {
+            router.push('/signin');
+          });
+        }
       } else {
-        router.push('/wallets');
+        // Signin flow: proceed to wallets
+        if (session.user.challengeId) {
+          client.execute(session.user.challengeId, (error, result) => {
+            if (error) {
+              setFormMessage('An error occurred on PIN Setup. Please try again.');
+            } else if (result) {
+              // only navigate to wallets if PIN setup complete
+              router.push('/wallets');
+            }
+          });
+        } else {
+          router.push('/wallets');
+        }
       }
       setLoading(false);
     }
-  }, [redirect, session, session?.user, client, router]);
+  }, [redirect, session, session?.user, client, router, isSignupFlow]);
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
@@ -93,6 +115,7 @@ export const AuthenticationForm: React.FC<AuthenticationFormProps> = ({
       });
 
       if (res?.ok) {
+        setIsSignupFlow(true);
         return setRedirect(true);
       } else if (res?.error) {
         setFormMessage(res.error);

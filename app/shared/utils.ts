@@ -81,18 +81,24 @@ export const blockchainMeta = (blockchain: string | undefined) => {
         svg: `/Matic.svg`,
         testnet: 'Matic Amoy Testnet',
         nativeTokenName: 'AmoyMATIC',
+        uriScheme: 'polygon',
+        chainId: '80002',
       };
     case 'ETH-SEPOLIA':
       return {
         svg: `/Eth.svg`,
         testnet: 'Ethereum Sepolia Testnet',
         nativeTokenName: 'SepoliaETH',
+        uriScheme: 'ethereum',
+        chainId: '11155111',
       };
     case 'AVAX-FUJI':
       return {
         svg: `/Avax.svg`,
         testnet: 'Avalanche Fuji Testnet',
         nativeTokenName: 'FujiAVAX',
+        uriScheme: 'avalanche',
+        chainId: '43113',
       };
 
     case 'SOL-DEVNET':
@@ -100,12 +106,16 @@ export const blockchainMeta = (blockchain: string | undefined) => {
         svg: `/Solana.svg`,
         testnet: 'Solana Devnet',
         nativeTokenName: 'DevnetSOL',
+        uriScheme: 'solana',
+        chainId: '', // Solana doesn't use chain ID in URI
       };
     default:
       return {
         svg: '',
         testnet: '',
         nativeTokenName: '',
+        uriScheme: '',
+        chainId: '',
       };
   }
 };

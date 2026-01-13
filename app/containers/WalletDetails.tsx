@@ -91,9 +91,9 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
                 Wallet Details
               </Typography>
               <Typography level="body-sm" className="text-gray-500 mt-1">
-                {walletData?.data.wallet.address ?
-                  `${walletData.data.wallet.address.slice(0, 6)}...${walletData.data.wallet.address.slice(-4)}` :
-                  'Loading address...'
+                {walletData?.data.wallet.contractAddress ?
+                  `${walletData.data.wallet.contractAddress.slice(0, 6)}...${walletData.data.wallet.contractAddress.slice(-4)}` :
+                  'Wallet is creating...'
                 }
               </Typography>
             </Box>
@@ -103,15 +103,15 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
               className="border-gray-200 bg-gray-50"
               startDecorator={
                 <Image
-                  src={blockchainInfo.logoUrl}
-                  alt={blockchainInfo.name}
+                  src={blockchainInfo.svg}
+                  alt={blockchainInfo.testnet}
                   width={20}
                   height={20}
                   className="rounded-full"
                 />
               }
             >
-              {blockchainInfo.name}
+              {blockchainInfo.testnet}
             </Chip>
           </Box>
 
@@ -134,8 +134,8 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
                 </Box>
                 <Box className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
                   <Image
-                    src={blockchainInfo.logoUrl}
-                    alt={blockchainInfo.name}
+                    src={blockchainInfo.svg}
+                    alt={blockchainInfo.testnet}
                     width={48}
                     height={48}
                     className="drop-shadow-lg"
@@ -239,7 +239,7 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
                     className="mx-auto opacity-80"
                   />
                 </Box>
-                <Typography level="h5" className="text-gray-700 mb-2 font-bold">
+                <Typography level="title-lg" className="text-gray-700 mb-2 font-bold">
                   No tokens yet
                 </Typography>
                 <Typography level="body-sm" className="text-gray-500 max-w-md mx-auto">
@@ -318,7 +318,7 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
                     Network
                   </Typography>
                   <Typography level="h4" className="font-bold text-gray-900">
-                    {blockchainInfo.name}
+                    {blockchainInfo.testnet}
                   </Typography>
                 </CardContent>
               </Card>

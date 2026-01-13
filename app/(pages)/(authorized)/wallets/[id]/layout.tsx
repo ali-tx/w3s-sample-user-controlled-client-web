@@ -60,7 +60,7 @@ export default function WalletLayout({
   const restorePin = useRestorePinMutation();
 
   const blockchainInfo = blockchainMeta(wallet?.data.wallet.blockchain);
-  const walletAddress = wallet?.data.wallet.address ?? "";
+  const contractAddress = wallet?.data.wallet.contractAddress || "";
 
   const handleChangePin = async () => {
     const challengeId = await restorePin.mutateAsync();
@@ -101,8 +101,8 @@ export default function WalletLayout({
         </Tooltip>
 
         <CopyButton
-          copyValue={walletAddress}
-          copyLabel={getAddressAbbreviation(walletAddress)}
+          copyValue={contractAddress}
+          copyLabel={contractAddress ? getAddressAbbreviation(contractAddress) : "Wallet is creating..."}
         />
 
         <Dropdown>
